@@ -1,0 +1,386 @@
+/* ---------------------------- Buttons ---------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 11px 22px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: transform var(--transition-fast), background var(--transition-fast), opacity var(--transition-fast);
+}
+
+.btn i {
+  width: 16px;
+  height: 16px;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--primary {
+  background: var(--accent-gold);
+  color: #1a1206;
+}
+
+.btn--primary:hover {
+  opacity: 0.9;
+}
+
+.btn--secondary {
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn--secondary:hover {
+  border-color: var(--accent-gold);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn--ghost:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+.btn--full {
+  width: 100%;
+}
+
+.btn--sm {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+}
+
+.btn--link {
+  background: none;
+  border: none;
+  color: var(--accent-gold);
+  font-weight: 600;
+  padding: 0;
+}
+
+/* ---------------------------- Movie card ---------------------------- */
+.movie-card {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+  cursor: pointer;
+}
+
+.movie-card:hover,
+.movie-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--border);
+  box-shadow: var(--shadow-card);
+}
+
+.movie-card__poster {
+  position: relative;
+  aspect-ratio: 2 / 3;
+}
+
+/* Movie poster image */
+.poster-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #0D0F14;
+}
+
+.poster-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(12, 14, 19, 0.55);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.favorite-btn i {
+  width: 18px;
+  height: 18px;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.08);
+}
+
+.favorite-btn.is-favorite {
+  color: var(--accent-red);
+}
+
+.favorite-btn.is-favorite i {
+  fill: var(--accent-red);
+}
+
+.movie-card__body {
+  padding: 14px;
+}
+
+.movie-card__title {
+  font-size: 0.98rem;
+  margin-bottom: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movie-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  color: var(--accent-gold);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.rating-badge i {
+  width: 13px;
+  height: 13px;
+  fill: var(--accent-gold);
+}
+
+/* ---------------------------- Genre tags ---------------------------- */
+.genre-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 14px 0;
+}
+
+.genre-tag {
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-gold-dim);
+  color: var(--accent-gold);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* ---------------------------- Modal ---------------------------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(6, 7, 10, 0.75);
+  backdrop-filter: blur(6px);
+}
+
+.modal.is-open {
+  display: flex;
+  animation: fadeIn var(--transition-base);
+}
+
+.modal__content {
+  position: relative;
+  display: flex;
+  max-width: 780px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  animation: slideUp var(--transition-base);
+}
+
+.modal__poster {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.modal__poster .poster-placeholder {
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}
+
+.modal__poster .poster-placeholder img {
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}
+
+.modal__details {
+  padding: 32px;
+  flex: 1;
+  min-width: 0;
+}
+
+.modal__meta {
+  margin: 14px 0 0;
+}
+
+.modal__description {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.modal__actions {
+  margin-top: 24px;
+}
+
+.modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* ---------------------------- Toasts ---------------------------- */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.toast {
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  font-size: 0.88rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------------------- Form fields ---------------------------- */
+.field {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.field label {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.field input,
+.discover-toolbar select,
+.discover-toolbar input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  transition: border-color var(--transition-fast);
+}
+
+.field input:focus,
+.discover-toolbar select:focus,
+.discover-toolbar input:focus {
+  border-color: var(--accent-gold);
+  outline: none;
+}
+
+.field-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.field-checkbox input {
+  width: auto;
+}
+
+.form-error {
+  color: var(--accent-red);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  margin-bottom: 12px;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
