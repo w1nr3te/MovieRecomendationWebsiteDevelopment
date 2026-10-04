@@ -82,6 +82,14 @@ function switchPage(pageName) {
     return;
   }
 
+  // Leaving the movie page: clear its #/movie/ID hash and restore the tab title.
+  if (pageName !== "movie") {
+    if (location.hash.startsWith("#/movie/")) {
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+    document.title = "Reelist — Discover your next favorite movie";
+  }
+
   state.currentPage = pageName;
   document.querySelectorAll(".page").forEach((el) => el.classList.toggle("is-active", el.dataset.page === pageName));
   document.querySelectorAll(".nav-link").forEach((el) => el.classList.toggle("is-active", el.dataset.page === pageName));
@@ -145,6 +153,13 @@ function wireGlobalEvents() {
         break;
       case "close-modal":
         closeModal();
+        break;
+      case "open-movie-page":
+        closeModal(); // the link's #/movie/ID hash does the navigation
+        break;
+      case "movie-back":
+        e.preventDefault();
+        goBackFromMoviePage();
         break;
       case "open-login":
         openLoginOverlay();
@@ -234,6 +249,7 @@ function toggleFavorite(movieId) {
   if (state.currentPage === "home") renderHomePage();
   if (state.currentPage === "discover") renderDiscoverPage();
   if (state.currentPage === "favorites") renderFavoritesPage();
+  if (state.currentPage === "movie") renderMoviePage(movieId);
 }
 
 // ---------------------------------------------------------------------
