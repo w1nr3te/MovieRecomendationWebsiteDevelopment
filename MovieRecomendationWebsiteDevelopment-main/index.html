@@ -1,231 +1,703 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Reelist — Discover your next favorite movie</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+    <title>Reelist — Discover your next favorite movie</title>
 
-<link rel="stylesheet" href="css/base.css" />
-<link rel="stylesheet" href="css/layout.css" />
-<link rel="stylesheet" href="css/components.css" />
-<link rel="stylesheet" href="css/login.css" />
-<link rel="stylesheet" href="css/movie-page.css" />
-<link rel="stylesheet" href="css/responsive.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+        rel="stylesheet"
+    />
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="css/movie-page.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+
+    <!-- Discover Toolbar Layout -->
+    <style>
+        /* =====================================
+           DISCOVER SEARCH AND FILTER TOOLBAR
+        ===================================== */
+
+        .discover-toolbar {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 24px;
+            box-sizing: border-box;
+        }
+
+        /* Search container */
+        .discover-toolbar__search {
+            flex: 2;
+            min-width: 0;
+        }
+
+        /* Search input */
+        .discover-toolbar__search input {
+            display: block;
+            width: 100%;
+            height: 44px;
+            padding: 0 14px;
+            box-sizing: border-box;
+            border-radius: 8px;
+        }
+
+        /* Genre and sorting dropdowns */
+        .discover-toolbar > select {
+            flex: 1;
+            min-width: 0;
+            width: auto;
+            height: 44px;
+            padding: 0 12px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Keep all controls aligned */
+        .discover-toolbar input,
+        .discover-toolbar select {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 600px) {
+            .discover-toolbar {
+                gap: 8px;
+            }
+
+            .discover-toolbar__search {
+                flex: 1.5;
+            }
+
+            .discover-toolbar__search input {
+                padding: 0 8px;
+                font-size: 12px;
+            }
+
+            .discover-toolbar > select {
+                flex: 1;
+                padding: 0 5px;
+                font-size: 11px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- ======================= NAVBAR ======================= -->
-<header class="navbar" id="mobile-nav">
-  <div class="navbar__brand">
-    <i data-lucide="clapperboard"></i>
-    Reelist
-  </div>
+    <!-- =====================================
+         NAVIGATION BAR
+    ====================================== -->
 
-  <nav class="navbar__links">
-    <a href="#" class="nav-link is-active" data-page="home">Home</a>
-    <a href="#" class="nav-link" data-page="discover">Discover</a>
-    <a href="#" class="nav-link" data-page="favorites">Favorites</a>
-    <a href="#" class="nav-link" data-page="profile">Profile</a>
-  </nav>
+    <header class="navbar" id="mobile-nav">
 
-  <div class="navbar__right">
-    <div id="nav-auth-area"></div>
-    <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle menu">
-      <i data-lucide="menu"></i>
-    </button>
-  </div>
-</header>
-
-<main>
-
-  <!-- ======================= HOME PAGE ======================= -->
-  <section class="page is-active" data-page="home">
-    <div class="hero" id="hero-section">
-      <div class="hero__content">
-        <span class="hero__eyebrow">Featured Movie</span>
-        <h1 class="hero__title"></h1>
-        <p class="hero__description"></p>
-        <div class="hero__meta"></div>
-        <button class="btn btn--primary" data-action="hero-details">
-          <i data-lucide="play"></i> View Details
-        </button>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section__header">
-        <h2 class="section__title">Recommended Movies</h2>
-      </div>
-      <div class="movie-grid" id="recommended-grid"></div>
-    </div>
-
-    <div class="section">
-      <div class="section__header">
-        <h2 class="section__title">Trending Now</h2>
-      </div>
-      <div class="movie-grid" id="trending-grid"></div>
-    </div>
-
-    <div class="section">
-      <div class="section__header">
-        <h2 class="section__title">Popular</h2>
-      </div>
-      <div class="movie-grid" id="popular-grid"></div>
-    </div>
-  </section>
-
-  <!-- ======================= DISCOVER PAGE ======================= -->
-  <section class="page" data-page="discover">
-    <div class="discover-toolbar">
-      <div class="discover-toolbar__search">
-        <input type="text" id="search-input" placeholder="Search movies by title..." aria-label="Search movies" />
-      </div>
-      <select id="genre-filter" aria-label="Filter by genre"></select>
-      <select id="sort-filter" aria-label="Sort movies">
-        <option value="rating">Sort by Rating</option>
-        <option value="year">Sort by Newest</option>
-      </select>
-    </div>
-    <div class="section">
-      <div class="movie-grid" id="discover-grid"></div>
-    </div>
-  </section>
-
-  <!-- ======================= FAVORITES PAGE ======================= -->
-  <section class="page" data-page="favorites">
-    <div class="section" style="padding-top: 40px;">
-      <div class="section__header">
-        <h2 class="section__title">Your Favorites</h2>
-      </div>
-      <div class="movie-grid" id="favorites-grid"></div>
-    </div>
-  </section>
-
-  <!-- ======================= PROFILE PAGE ======================= -->
-  <section class="page" data-page="profile">
-    <div class="profile-card">
-      <div class="profile-avatar">
-        <i data-lucide="user"></i>
-      </div>
-      <h2 id="profile-username"></h2>
-      <p style="color: var(--text-secondary); font-size: 0.9rem;" id="profile-email"></p>
-      <div class="profile-stats">
-        <div class="profile-stat">
-          <strong id="profile-favorites-count">0</strong>
-          <span>Favorites</span>
+        <div class="navbar__brand">
+            <i data-lucide="clapperboard"></i>
+            Reelist
         </div>
-        <div class="profile-stat">
-          <strong id="profile-history-count">0</strong>
-          <span>Viewed</span>
+
+        <nav class="navbar__links">
+            <a href="#" class="nav-link is-active" data-page="home">
+                Home
+            </a>
+
+            <a href="#" class="nav-link" data-page="discover">
+                Discover
+            </a>
+
+            <a href="#" class="nav-link" data-page="favorites">
+                Favorites
+            </a>
+
+            <a href="#" class="nav-link" data-page="profile">
+                Profile
+            </a>
+        </nav>
+
+        <div class="navbar__right">
+
+            <div id="nav-auth-area"></div>
+
+            <button
+                class="mobile-nav-toggle"
+                id="mobile-nav-toggle"
+                aria-label="Toggle menu"
+            >
+                <i data-lucide="menu"></i>
+            </button>
+
         </div>
-      </div>
-      <button class="btn btn--ghost btn--full" style="margin-top: 24px;" data-action="logout">
-        <i data-lucide="log-out"></i> Log Out
-      </button>
+
+    </header>
+
+
+    <!-- =====================================
+         MAIN CONTENT
+    ====================================== -->
+
+    <main>
+
+        <!-- =================================
+             HOME PAGE
+        ================================== -->
+
+        <section class="page is-active" data-page="home">
+
+            <div class="hero" id="hero-section">
+
+                <div class="hero__content">
+
+                    <span class="hero__eyebrow">
+                        Featured Movie
+                    </span>
+
+                    <h1 class="hero__title"></h1>
+
+                    <p class="hero__description"></p>
+
+                    <div class="hero__meta"></div>
+
+                    <button
+                        class="btn btn--primary"
+                        data-action="hero-details"
+                    >
+                        <i data-lucide="play"></i>
+                        View Details
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Recommended Movies -->
+
+            <div class="section">
+
+                <div class="section__header">
+                    <h2 class="section__title">
+                        Recommended Movies
+                    </h2>
+                </div>
+
+                <div
+                    class="movie-grid"
+                    id="recommended-grid"
+                ></div>
+
+            </div>
+
+
+            <!-- Trending Movies -->
+
+            <div class="section">
+
+                <div class="section__header">
+                    <h2 class="section__title">
+                        Trending Now
+                    </h2>
+                </div>
+
+                <div
+                    class="movie-grid"
+                    id="trending-grid"
+                ></div>
+
+            </div>
+
+
+            <!-- Popular Movies -->
+
+            <div class="section">
+
+                <div class="section__header">
+                    <h2 class="section__title">
+                        Popular
+                    </h2>
+                </div>
+
+                <div
+                    class="movie-grid"
+                    id="popular-grid"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             DISCOVER PAGE
+        ================================== -->
+
+        <section class="page" data-page="discover">
+
+            <!-- Search, Genre, and Sort -->
+
+            <div class="discover-toolbar">
+
+                <!-- Search Movie -->
+
+                <div class="discover-toolbar__search">
+
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Search movies..."
+                        aria-label="Search movies by title"
+                    />
+
+                </div>
+
+
+                <!-- Genre Filter -->
+
+                <select
+                    id="genre-filter"
+                    aria-label="Filter by genre"
+                ></select>
+
+
+                <!-- Rating and Year Sorting -->
+
+                <select
+                    id="sort-filter"
+                    aria-label="Sort movies"
+                >
+
+                    <option value="rating">
+                        Sort by Rating
+                    </option>
+
+                    <option value="year">
+                        Sort by Newest
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Discover Movie Grid -->
+
+            <div class="section">
+
+                <div
+                    class="movie-grid"
+                    id="discover-grid"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             FAVORITES PAGE
+        ================================== -->
+
+        <section class="page" data-page="favorites">
+
+            <div
+                class="section"
+                style="padding-top: 40px;"
+            >
+
+                <div class="section__header">
+
+                    <h2 class="section__title">
+                        Your Favorites
+                    </h2>
+
+                </div>
+
+                <div
+                    class="movie-grid"
+                    id="favorites-grid"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             PROFILE PAGE
+        ================================== -->
+
+        <section class="page" data-page="profile">
+
+            <div class="profile-card">
+
+                <div class="profile-avatar">
+                    <i data-lucide="user"></i>
+                </div>
+
+                <h2 id="profile-username"></h2>
+
+                <p
+                    style="color: var(--text-secondary); font-size: 0.9rem;"
+                    id="profile-email"
+                ></p>
+
+
+                <!-- Profile Statistics -->
+
+                <div class="profile-stats">
+
+                    <div class="profile-stat">
+
+                        <strong id="profile-favorites-count">
+                            0
+                        </strong>
+
+                        <span>Favorites</span>
+
+                    </div>
+
+                    <div class="profile-stat">
+
+                        <strong id="profile-history-count">
+                            0
+                        </strong>
+
+                        <span>Viewed</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Logout Button -->
+
+                <button
+                    class="btn btn--ghost btn--full"
+                    style="margin-top: 24px;"
+                    data-action="logout"
+                >
+
+                    <i data-lucide="log-out"></i>
+                    Log Out
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             MOVIE DETAILS PAGE
+        ================================== -->
+
+        <section class="page" data-page="movie">
+
+            <div id="movie-page"></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer class="footer">
+
+        Reelist is a demo project.
+        Movie data is mock content — no real posters
+        or copyrighted media are hosted.
+
+    </footer>
+
+
+    <!-- =====================================
+         MOVIE DETAILS MODAL
+    ====================================== -->
+
+    <div class="modal" id="movie-modal">
+
+        <div class="modal__content"></div>
+
     </div>
-  </section>
 
-  <!-- ======================= MOVIE DETAILS PAGE ======================= -->
-  <section class="page" data-page="movie">
-    <div id="movie-page"></div>
-  </section>
 
-</main>
+    <!-- =====================================
+         LOGIN AND REGISTER OVERLAY
+    ====================================== -->
 
-<footer class="footer">
-  Reelist is a demo project. Movie data is mock content — no real posters or copyrighted media are hosted.
-</footer>
+    <div class="login-overlay" id="login-overlay">
 
-<!-- ======================= MOVIE DETAILS MODAL ======================= -->
-<div class="modal" id="movie-modal">
-  <div class="modal__content"></div>
-</div>
+        <div class="login-panel">
 
-<!-- ======================= LOGIN / REGISTER OVERLAY ======================= -->
-<div class="login-overlay" id="login-overlay">
-  <div class="login-panel">
-    <button class="login-panel__close" data-action="close-login" aria-label="Close and continue as guest">
-      <i data-lucide="x"></i>
-    </button>
+            <!-- Close Button -->
 
-    <div class="login-panel__brand">
-      <i data-lucide="clapperboard"></i>
+            <button
+                class="login-panel__close"
+                data-action="close-login"
+                aria-label="Close and continue as guest"
+            >
+                <i data-lucide="x"></i>
+            </button>
+
+
+            <!-- Brand -->
+
+            <div class="login-panel__brand">
+                <i data-lucide="clapperboard"></i>
+            </div>
+
+
+            <!-- LOGIN FORM -->
+
+            <form id="login-form">
+
+                <h2>Welcome back</h2>
+
+                <p class="login-panel__subtitle">
+                    Log in to save favorites and get recommendations.
+                </p>
+
+                <p
+                    class="form-error"
+                    id="auth-error"
+                ></p>
+
+
+                <div class="field">
+
+                    <label for="login-username">
+                        Username or email
+                    </label>
+
+                    <input
+                        type="text"
+                        id="login-username"
+                        autocomplete="username"
+                        required
+                    />
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="login-password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="login-password"
+                        autocomplete="current-password"
+                        required
+                    />
+
+                </div>
+
+
+                <label class="field-checkbox">
+
+                    <input
+                        type="checkbox"
+                        id="login-remember"
+                        checked
+                    />
+
+                    Remember me
+
+                </label>
+
+
+                <button
+                    type="submit"
+                    class="btn btn--primary btn--full"
+                >
+                    Log In
+                </button>
+
+
+                <p class="login-panel__switch">
+
+                    No account?
+
+                    <button
+                        type="button"
+                        class="btn--link"
+                        data-action="switch-to-register"
+                    >
+                        Register
+                    </button>
+
+                </p>
+
+            </form>
+
+
+            <!-- REGISTER FORM -->
+
+            <form
+                id="register-form"
+                class="is-hidden"
+            >
+
+                <h2>Create account</h2>
+
+                <p class="login-panel__subtitle">
+                    Takes a few seconds — no email verification.
+                </p>
+
+
+                <div class="field">
+
+                    <label for="register-username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="register-username"
+                        autocomplete="username"
+                        required
+                    />
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="register-email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="register-email"
+                        autocomplete="email"
+                        required
+                    />
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="register-password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="register-password"
+                        autocomplete="new-password"
+                        required
+                        minlength="6"
+                    />
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn--primary btn--full"
+                >
+                    Create Account
+                </button>
+
+
+                <p class="login-panel__switch">
+
+                    Already have an account?
+
+                    <button
+                        type="button"
+                        class="btn--link"
+                        data-action="switch-to-login"
+                    >
+                        Log In
+                    </button>
+
+                </p>
+
+            </form>
+
+
+            <!-- GUEST ACCESS -->
+
+            <div class="login-panel__guest">
+
+                <button
+                    class="btn btn--ghost btn--full"
+                    data-action="close-login"
+                >
+                    Continue as Guest
+                </button>
+
+            </div>
+
+
+            <!-- Disclaimer -->
+
+            <p class="login-panel__disclaimer">
+
+                Demo authentication only. Accounts are stored
+                in this browser's localStorage and are not
+                encrypted or secure — don't reuse a real
+                password here.
+
+            </p>
+
+        </div>
+
     </div>
 
-    <!-- Login form -->
-    <form id="login-form">
-      <h2>Welcome back</h2>
-      <p class="login-panel__subtitle">Log in to save favorites and get recommendations.</p>
 
-      <p class="form-error" id="auth-error"></p>
+    <!-- =====================================
+         TOAST NOTIFICATIONS
+    ====================================== -->
 
-      <div class="field">
-        <label for="login-username">Username or email</label>
-        <input type="text" id="login-username" autocomplete="username" required />
-      </div>
-      <div class="field">
-        <label for="login-password">Password</label>
-        <input type="password" id="login-password" autocomplete="current-password" required />
-      </div>
-      <label class="field-checkbox">
-        <input type="checkbox" id="login-remember" checked />
-        Remember me
-      </label>
+    <div
+        class="toast-container"
+        id="toast-container"
+    ></div>
 
-      <button type="submit" class="btn btn--primary btn--full">Log In</button>
 
-      <p class="login-panel__switch">
-        No account? <button type="button" class="btn--link" data-action="switch-to-register">Register</button>
-      </p>
-    </form>
+    <!-- =====================================
+         JAVASCRIPT FILES
+    ====================================== -->
 
-    <!-- Register form -->
-    <form id="register-form" class="is-hidden">
-      <h2>Create account</h2>
-      <p class="login-panel__subtitle">Takes a few seconds — no email verification.</p>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
-      <div class="field">
-        <label for="register-username">Username</label>
-        <input type="text" id="register-username" autocomplete="username" required />
-      </div>
-      <div class="field">
-        <label for="register-email">Email</label>
-        <input type="email" id="register-email" autocomplete="email" required />
-      </div>
-      <div class="field">
-        <label for="register-password">Password</label>
-        <input type="password" id="register-password" autocomplete="new-password" required minlength="6" />
-      </div>
+    <script src="js/movies-data.js"></script>
 
-      <button type="submit" class="btn btn--primary btn--full">Create Account</button>
+    <script src="js/movie-details.js"></script>
 
-      <p class="login-panel__switch">
-        Already have an account? <button type="button" class="btn--link" data-action="switch-to-login">Log In</button>
-      </p>
-    </form>
+    <script src="js/auth.js"></script>
 
-    <div class="login-panel__guest">
-      <button class="btn btn--ghost btn--full" data-action="close-login">Continue as Guest</button>
-    </div>
+    <script src="js/recommendations.js"></script>
 
-    <p class="login-panel__disclaimer">
-      Demo authentication only. Accounts are stored in this browser's localStorage and are not encrypted or secure — don't reuse a real password here.
-    </p>
-  </div>
-</div>
+    <script src="js/ui.js"></script>
 
-<div class="toast-container" id="toast-container"></div>
+    <script src="js/main.js"></script>
 
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-<script src="js/movies-data.js"></script>
-<script src="js/movie-details.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/recommendations.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/main.js"></script>
-<script src="js/movie-page.js"></script>
+    <script src="js/movie-page.js"></script>
+
 </body>
+
 </html>
